@@ -31,14 +31,12 @@ function AdminLogin() {
       .eq("role", "admin");
 
     if (rolesError) {
-      await supabase.auth.signOut();
       setError(rolesError.message);
       setLoading(false);
       return;
     }
 
     if (!roles || roles.length === 0) {
-      await supabase.auth.signOut();
       setError("This account does not have administrator access.");
       setLoading(false);
       return;
