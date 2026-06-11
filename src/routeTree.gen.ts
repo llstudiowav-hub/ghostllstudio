@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LicensingRouteImport } from './routes/licensing'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrackTrackIdRouteImport } from './routes/track.$trackId'
 
+const LicensingRoute = LicensingRouteImport.update({
+  id: '/licensing',
+  path: '/licensing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/licensing': typeof LicensingRoute
   '/track/$trackId': typeof TrackTrackIdRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/licensing': typeof LicensingRoute
   '/track/$trackId': typeof TrackTrackIdRoute
 }
 export interface FileRoutesById {
@@ -61,19 +69,33 @@ export interface FileRoutesById {
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/licensing': typeof LicensingRoute
   '/track/$trackId': typeof TrackTrackIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catalog' | '/contact' | '/how-it-works' | '/track/$trackId'
+  fullPaths:
+    | '/'
+    | '/catalog'
+    | '/contact'
+    | '/how-it-works'
+    | '/licensing'
+    | '/track/$trackId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catalog' | '/contact' | '/how-it-works' | '/track/$trackId'
+  to:
+    | '/'
+    | '/catalog'
+    | '/contact'
+    | '/how-it-works'
+    | '/licensing'
+    | '/track/$trackId'
   id:
     | '__root__'
     | '/'
     | '/catalog'
     | '/contact'
     | '/how-it-works'
+    | '/licensing'
     | '/track/$trackId'
   fileRoutesById: FileRoutesById
 }
@@ -82,11 +104,19 @@ export interface RootRouteChildren {
   CatalogRoute: typeof CatalogRoute
   ContactRoute: typeof ContactRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  LicensingRoute: typeof LicensingRoute
   TrackTrackIdRoute: typeof TrackTrackIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/licensing': {
+      id: '/licensing'
+      path: '/licensing'
+      fullPath: '/licensing'
+      preLoaderRoute: typeof LicensingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/how-it-works': {
       id: '/how-it-works'
       path: '/how-it-works'
@@ -130,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   CatalogRoute: CatalogRoute,
   ContactRoute: ContactRoute,
   HowItWorksRoute: HowItWorksRoute,
+  LicensingRoute: LicensingRoute,
   TrackTrackIdRoute: TrackTrackIdRoute,
 }
 export const routeTree = rootRouteImport
