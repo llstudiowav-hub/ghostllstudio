@@ -24,7 +24,19 @@ function AdminLogin() {
     setLoading(true); setError(null);
     const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
     if (err || !data.user) { setError(err?.message ?? "Login failed"); setLoading(false); return; }
-    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id).eq("role", "admin");
+    const { data: roles, error: rolesError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .eq("role", "admin");
+
+    if (rolesError) {
+      await supabase.auth.signOut();
+      setError(rolesError.message);
+      setLoading(false);
+      return;
+    }
+
     if (!roles || roles.length === 0) {
       await supabase.auth.signOut();
       setError("This account does not have administrator access.");
