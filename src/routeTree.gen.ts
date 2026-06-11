@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrackTrackIdRouteImport } from './routes/track.$trackId'
 
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/track/$trackId': typeof TrackTrackIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/track/$trackId': typeof TrackTrackIdRoute
 }
 export interface FileRoutesById {
@@ -52,25 +60,40 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/track/$trackId': typeof TrackTrackIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catalog' | '/contact' | '/track/$trackId'
+  fullPaths: '/' | '/catalog' | '/contact' | '/how-it-works' | '/track/$trackId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catalog' | '/contact' | '/track/$trackId'
-  id: '__root__' | '/' | '/catalog' | '/contact' | '/track/$trackId'
+  to: '/' | '/catalog' | '/contact' | '/how-it-works' | '/track/$trackId'
+  id:
+    | '__root__'
+    | '/'
+    | '/catalog'
+    | '/contact'
+    | '/how-it-works'
+    | '/track/$trackId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CatalogRoute: typeof CatalogRoute
   ContactRoute: typeof ContactRoute
+  HowItWorksRoute: typeof HowItWorksRoute
   TrackTrackIdRoute: typeof TrackTrackIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -106,6 +129,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CatalogRoute: CatalogRoute,
   ContactRoute: ContactRoute,
+  HowItWorksRoute: HowItWorksRoute,
   TrackTrackIdRoute: TrackTrackIdRoute,
 }
 export const routeTree = rootRouteImport
